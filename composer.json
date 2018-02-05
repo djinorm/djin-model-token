@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "djinorm/djin": "simple-dev"
+        "djinorm/djin": "dev-simple"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0"
