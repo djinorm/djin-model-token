@@ -8,9 +8,9 @@ namespace DjinORM\Models\Token;
 
 use DateTime;
 use DjinORM\Djin\Exceptions\InvalidArgumentException;
-use DjinORM\Djin\Helpers\RepoHelper;
 use DjinORM\Djin\Id\Id;
 use PHPUnit\Framework\TestCase;
+use DjinORM\Models\Token\TokenMock as Token;
 
 class TokenTest extends TestCase
 {
@@ -42,13 +42,6 @@ class TokenTest extends TestCase
     {
         $this->assertEquals(65, strlen($this->model->getToken()));
         $this->assertTrue(stripos($this->model->getToken(), $this->model->getId()->toScalar()) !== false);
-    }
-
-    public function testGetForgottenToken()
-    {
-        RepoHelper::setProperty($this->model, 'token', null);
-        $this->expectException(\LogicException::class);
-        $this->model->getToken();
     }
 
     public function testIsValidToken()

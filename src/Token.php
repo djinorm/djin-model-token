@@ -13,7 +13,7 @@ use DjinORM\Djin\Model\ModelInterface;
 use DjinORM\Djin\Model\ModelTrait;
 use LogicException;
 
-class Token implements ModelInterface
+abstract class Token implements ModelInterface
 {
 
     use ModelTrait;
@@ -47,6 +47,8 @@ class Token implements ModelInterface
      * @param Id $entityId
      * @param string $ip
      * @param string $userAgent
+     * @throws InvalidArgumentException
+     * @throws \Exception
      */
     public function __construct(Id $entityId, string $ip, string $userAgent)
     {
@@ -137,6 +139,9 @@ class Token implements ModelInterface
         return $this->lastAccessAt;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function setLastAccessAtNow()
     {
         $this->lastAccessAt = new \DateTimeImmutable();
