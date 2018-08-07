@@ -10,7 +10,7 @@ use DateTime;
 use DjinORM\Djin\Exceptions\InvalidArgumentException;
 use DjinORM\Djin\Id\Id;
 use PHPUnit\Framework\TestCase;
-use DjinORM\Models\Token\TokenMock as Token;
+use DjinORM\Models\Token\TokenClass as Token;
 
 class TokenTest extends TestCase
 {

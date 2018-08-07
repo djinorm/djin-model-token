@@ -8,7 +8,11 @@
 namespace DjinORM\Models\Token;
 
 
-class TokenMock extends Token
+class TokenClass extends Token
 {
 
+    public static function getModelName(): string
+    {
+        return 'token';
+    }
 }
