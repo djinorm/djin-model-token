@@ -10,6 +10,7 @@ namespace DjinORM\Models\Token;
 use DjinORM\Djin\Exceptions\InvalidArgumentException;
 use DjinORM\Djin\Id\Id;
 use DjinORM\Djin\Model\ModelInterface;
+use DjinORM\Djin\Model\ModelPointer;
 use DjinORM\Djin\Model\ModelTrait;
 use LogicException;
 
@@ -21,8 +22,8 @@ abstract class Token implements ModelInterface
     /** @var Id */
     protected $id;
 
-    /** @var Id */
-    protected $entityId;
+    /** @var ModelPointer */
+    protected $pointer;
 
     /** @var string */
     protected $hash;
@@ -44,20 +45,20 @@ abstract class Token implements ModelInterface
 
     /**
      * AuthToken constructor.
-     * @param Id $entityId
+     * @param ModelPointer $pointer
      * @param string $ip
      * @param string $userAgent
      * @throws InvalidArgumentException
      * @throws \Exception
      */
-    public function __construct(Id $entityId, string $ip, string $userAgent)
+    public function __construct(ModelPointer $pointer, string $ip, string $userAgent)
     {
         $this->id = new Id(bin2hex(random_bytes(16)));
 
         $this->token = bin2hex(random_bytes(16));
         $this->hash = password_hash($this->token, PASSWORD_BCRYPT);
 
-        $this->entityId = $entityId;
+        $this->pointer = $pointer;
         $this->setIp($ip);
         $this->userAgent = $userAgent;
 
@@ -79,11 +80,11 @@ abstract class Token implements ModelInterface
     }
 
     /**
-     * @return Id
+     * @return ModelPointer
      */
-    public function getEntityId(): Id
+    public function getPointer(): ModelPointer
     {
-        return $this->entityId;
+        return $this->pointer;
     }
 
     /**
