@@ -7,15 +7,18 @@
 namespace DjinORM\Models\Token;
 
 use DateTime;
+use DateTimeInterface;
 use DjinORM\Djin\Exceptions\InvalidArgumentException;
-use DjinORM\Djin\Model\ModelPointer;
+use DjinORM\Djin\Exceptions\LogicException;
+use DjinORM\Djin\Id\Id;
+use DjinORM\Djin\Model\Relation;
 use PHPUnit\Framework\TestCase;
 use DjinORM\Models\Token\TokenClass as Token;
 
 class TokenTest extends TestCase
 {
 
-    private $pointer;
+    private $relation;
     private $ip;
     private $userAgent;
 
@@ -24,22 +27,22 @@ class TokenTest extends TestCase
 
     /**
      * @throws InvalidArgumentException
-     * @throws \DjinORM\Djin\Exceptions\LogicException
+     * @throws LogicException
      */
     public function setUp()
     {
         parent::setUp();
-        $this->pointer = new ModelPointer('token', 777);
+        $this->relation = new Relation('token', new Id(777));
         $this->ip = '127.0.0.1';
         $this->userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3260.2 Safari/537.36';
 
-        $this->token = new Token($this->pointer, $this->ip, $this->userAgent);
+        $this->token = new Token($this->relation, $this->ip, $this->userAgent);
     }
 
     public function testConstructInvalidIp()
     {
         $this->expectException(InvalidArgumentException::class);
-        new Token($this->pointer, 'ccc', $this->userAgent);
+        new Token($this->relation, 'ccc', $this->userAgent);
     }
 
     public function testGetToken()
@@ -57,7 +60,7 @@ class TokenTest extends TestCase
 
     public function testGetPointer()
     {
-        $this->assertSame($this->pointer, $this->token->getPointer());
+        $this->assertSame($this->relation, $this->token->getOwner());
     }
 
     public function testGetIp()
@@ -103,7 +106,7 @@ class TokenTest extends TestCase
         $this->assertDatetimeNow($this->token->getLastAccessAt(), true);
     }
 
-    protected function assertDatetimeNow(\DateTimeInterface $actual, $withSeconds = false, $message = '')
+    protected function assertDatetimeNow(DateTimeInterface $actual, $withSeconds = false, $message = '')
     {
         $format = 'Y-m-d H:i';
         if ($withSeconds) {
